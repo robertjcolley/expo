@@ -40,10 +40,6 @@
   if (manifest[@"version"] != nil) {
     appVersion = manifest[@"version"];
   }
-  
-  if (manifest[@"manifetURL"] != nil) {
-    hostUrl = manifest[@"manifestURL"];
-  }
 
   buildInfo[@"appName"] = appName;
   buildInfo[@"appIcon"] = appIcon;
