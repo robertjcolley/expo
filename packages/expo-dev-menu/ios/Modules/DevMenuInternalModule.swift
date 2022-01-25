@@ -205,32 +205,41 @@ public class DevMenuInternalModule: NSObject, RCTBridgeModule {
   
   @objc
   func getBuildInfoAsync(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    let bridge = manager.delegate?.appBridge?(forDevMenuManager: self.manager)
-    let manifest = manager.session?.appInfo ?? [:]
+    if let bridge = manager.currentBridge {
+      let manifest = manager.currentManifest
+      
+      let buildInfo = EXDevMenuBuildInfo.getFor(bridge, andManifest: manifest as Any as! [AnyHashable : Any])
+      
+      let hostUrl = manager.currentManifestURL?.absoluteString
+          
+      resolve([
+        "appName": buildInfo["appName"],
+        "appIcon": buildInfo["appIcon"],
+        "appVersion": buildInfo["appVersion"],
+        "runtimeVersion": buildInfo["runtimeVersion"],
+        "sdkVersion": buildInfo["sdkVersion"],
+        "hostUrl": hostUrl,
+      ])
+    }
     
-    let buildInfo = EXDevMenuBuildInfo.getFor(bridge as! RCTBridge, andManifest: manifest as Any as! [AnyHashable : Any])
-        
-    resolve([
-      "appName": buildInfo["appName"],
-      "appIcon": buildInfo["appIcon"],
-      "appVersion": buildInfo["appVersion"],
-      "runtimeVersion": buildInfo["runtimeVersion"],
-      "sdkVersion": buildInfo["sdkVersion"],
-      "hostUrl": buildInfo["hostUrl"],
-    ])
+    //    TODO - reject case
   }
   
   @objc
   func getDevSettingsAsync(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    let bridge = manager.delegate?.appBridge?(forDevMenuManager: self.manager)
     
-    if let devSettings = bridge?.module(forName: "DevSettings") as? RCTDevSettings {
-      resolve([
-        "isDebuggingRemotely": devSettings.isDebuggingRemotely,
-        "isElementInspectorShown": devSettings.isElementInspectorShown,
-        "isHotLoadingEnabled": devSettings.isHotLoadingEnabled,
-        "isPerfMonitorShown": devSettings.isPerfMonitorShown,
-      ])
+    if let bridge = manager.currentBridge {
+      if let devSettings = bridge.module(forName: "DevSettings") as? RCTDevSettings {
+        resolve([
+          "isDebuggingRemotely": devSettings.isDebuggingRemotely,
+          "isElementInspectorShown": devSettings.isElementInspectorShown,
+          "isHotLoadingEnabled": devSettings.isHotLoadingEnabled,
+          "isPerfMonitorShown": devSettings.isPerfMonitorShown,
+        ])
+      }
+      
     }
+    
+    //    TODO - reject case
   }
 }

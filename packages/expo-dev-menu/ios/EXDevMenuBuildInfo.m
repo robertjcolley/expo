@@ -3,6 +3,25 @@
 
 @implementation EXDevMenuBuildInfo
 
+// TODO -- EXManifest - use actual interface
+//- (nullable NSString *)sdkVersion;
+//- (NSString *)bundleUrl;
+//- (nullable NSString *)revisionId;
+//- (nullable NSString *)slug;
+//- (nullable NSString *)appKey;
+//- (nullable NSString *)name;
+//- (nullable NSString *)version;
+//- (nullable NSDictionary *)notificationPreferences;
+//- (nullable NSDictionary *)updatesInfo;
+//- (nullable NSDictionary *)iosConfig;
+//- (nullable NSString *)hostUri;
+//- (nullable NSString *)orientation;
+//- (nullable NSDictionary *)experiments;
+//- (nullable NSDictionary *)developer;
+//- (nullable NSString *)facebookAppId;
+//- (nullable NSString *)facebookApplicationName;
+//- (BOOL)facebookAutoInitEnabled;
+
 +(NSDictionary *)getBuildInfoForBridge:(RCTBridge *)bridge andManifest:(NSDictionary *)manifest
 {
   NSMutableDictionary *buildInfo = [NSMutableDictionary new];
@@ -14,16 +33,16 @@
   NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleDisplayName"] ?: [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleExecutable"];
   NSString *hostUrl = [bridge.bundleURL host] ?: @"";
 
-  if (manifest[@"appName"] != nil) {
-    appName = manifest[@"appName"];
+  if (manifest[@"name"] != nil) {
+    appName = manifest[@"name"];
   }
   
-  if (manifest[@"appVersion"] != nil) {
-    appVersion = manifest[@"appVersion"];
+  if (manifest[@"version"] != nil) {
+    appVersion = manifest[@"version"];
   }
   
-  if (manifest[@"hostUrl"] != nil) {
-    hostUrl = manifest[@"hostUrl"];
+  if (manifest[@"manifetURL"] != nil) {
+    hostUrl = manifest[@"manifestURL"];
   }
 
   buildInfo[@"appName"] = appName;
