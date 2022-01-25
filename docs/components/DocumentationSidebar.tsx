@@ -53,8 +53,6 @@ type Props = {
   router: NextRouter;
   isVersionSelectorHidden: boolean;
   routes: NavigationRoute[];
-  version: string;
-  onSetVersion: (value: string) => void;
 };
 
 export default class DocumentationSidebar extends React.Component<Props> {
@@ -115,10 +113,7 @@ export default class DocumentationSidebar extends React.Component<Props> {
 
     return (
       <nav css={STYLES_SIDEBAR} {...customDataAttributes}>
-        {!this.props.isVersionSelectorHidden && (
-          <VersionSelector version={this.props.version} onSetVersion={this.props.onSetVersion} />
-        )}
-
+        {!this.props.isVersionSelectorHidden && <VersionSelector />}
         {this.props.routes.map(categoryInfo => {
           if (categoryIsHidden(categoryInfo.name)) {
             return null;
