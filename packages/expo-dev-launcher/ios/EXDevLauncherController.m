@@ -359,10 +359,6 @@ NSString *fakeLauncherBundleUrl = @"embedded://EXDevLauncher/dummy";
   self.manifestURL = appUrl;
   __block UIInterfaceOrientation orientation = [EXDevLauncherManifestHelper exportManifestOrientation:manifest.orientation];
   __block UIColor *backgroundColor = [EXDevLauncherManifestHelper hexStringToColor:manifest.iosOrRootBackgroundColor];
-
-  
-  
-  
   
   __weak __typeof(self) weakSelf = self;
   dispatch_async(dispatch_get_main_queue(), ^{
