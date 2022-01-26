@@ -60,7 +60,6 @@ open class DevMenuManager: NSObject {
    */
   @objc
   static public let shared = DevMenuManager()
-  
   /**
    The window that controls and displays the dev menu view.
    */
