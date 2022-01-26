@@ -220,14 +220,13 @@ public class DevMenuInternalModule: NSObject, RCTBridgeModule {
         "sdkVersion": buildInfo["sdkVersion"],
         "hostUrl": hostUrl,
       ])
+    } else {
+      reject("E_MISSING_BRIDGE", "DevMenuManager does not have a currentBridge - getBuildInfoAsync() ", nil);
     }
-    
-    //    TODO - reject case
   }
   
   @objc
   func getDevSettingsAsync(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    
     if let bridge = manager.currentBridge {
       if let devSettings = bridge.module(forName: "DevSettings") as? RCTDevSettings {
         resolve([
@@ -238,8 +237,8 @@ public class DevMenuInternalModule: NSObject, RCTBridgeModule {
         ])
       }
       
+    } else {
+      reject("E_MISSING_BRIDGE", "DevMenuManager does not have a currentBridge - getDevSettingsAsync() ", nil);
     }
-    
-    //    TODO - reject case
   }
 }

@@ -170,11 +170,7 @@ NSString *fakeLauncherBundleUrl = @"embedded://EXDevLauncher/dummy";
 - (void)navigateToLauncher
 {
   [_appBridge invalidate];
-  
-  DevMenuManager *manager = [DevMenuManager shared];
-  manager.currentBridge = nil;
-  manager.currentManifest = @{};
-  manager.currentManifestURL = nil;
+  [self invalidateDevMenuApp];
   
   self.manifest = nil;
   self.manifestURL = nil;
@@ -393,16 +389,8 @@ NSString *fakeLauncherBundleUrl = @"embedded://EXDevLauncher/dummy";
     
     [self.delegate devLauncherController:self didStartWithSuccess:YES];
     
-    DevMenuManager *manager = [DevMenuManager shared];
-    manager.currentBridge = self.appBridge;
+    [self setDevMenuAppBridge];
     
-    if (self.manifest != nil) {
-      // TODO - update to proper values / convert via instance method
-      manager.currentManifest = [self.manifest.rawManifestJSON copy];
-      manager.currentManifestURL = self.manifestURL;
-    }
-    
-
     [self _ensureUserInterfaceStyleIsInSyncWithTraitEnv:self.window.rootViewController];
 
     [[UIDevice currentDevice] setValue:@(orientation) forKey:@"orientation"];
@@ -550,6 +538,26 @@ NSString *fakeLauncherBundleUrl = @"embedded://EXDevLauncher/dummy";
 -(void)copyToClipboard:(NSString *)content {
   UIPasteboard *clipboard = [UIPasteboard generalPasteboard];
   clipboard.string = (content ? : @"");
+}
+
+- (void)setDevMenuAppBridge
+{
+  DevMenuManager *manager = [DevMenuManager shared];
+  manager.currentBridge = self.appBridge;
+  
+  if (self.manifest != nil) {
+    // TODO - update to proper values / convert via instance method
+    manager.currentManifest = [self.manifest.rawManifestJSON copy];
+    manager.currentManifestURL = self.manifestURL;
+  }
+}
+
+- (void)invalidateDevMenuApp
+{
+  DevMenuManager *manager = [DevMenuManager shared];
+  manager.currentBridge = nil;
+  manager.currentManifest = @{};
+  manager.currentManifestURL = nil;
 }
 
 @end
