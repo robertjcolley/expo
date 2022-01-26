@@ -91,7 +91,6 @@ open class DevMenuManager: NSObject {
       }
     }
   }
-  
   @objc
   public var currentManifest: [AnyHashable: Any] = [:]
   
