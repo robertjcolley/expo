@@ -19,7 +19,7 @@ import Head from '~/components/Head';
 import { H1 } from '~/components/base/headings';
 import navigation from '~/constants/navigation';
 import * as Constants from '~/constants/theme';
-import { withApiVersion } from '~/providers/api-version';
+import { usePageApiVersion } from '~/providers/page-api-version';
 import { NavigationRoute } from '~/types/common';
 
 const STYLES_DOCUMENT = css`
@@ -59,8 +59,7 @@ type Props = React.PropsWithChildren<{
   tocVisible: boolean;
   /** If the page should not show up in the Algolia Docsearch results */
   hideFromSearch?: boolean;
-  /** The current api version provided by `withApiVersion` HOC */
-  version?: string;
+  version: string;
 }>;
 
 type State = {
@@ -68,7 +67,7 @@ type State = {
   isMobileSearchActive: boolean;
 };
 
-class DocumentationPage extends React.Component<Props, State> {
+class DocumentationPageWithApiVersion extends React.Component<Props, State> {
   state = {
     isMenuActive: false,
     isMobileSearchActive: false,
@@ -339,4 +338,7 @@ class DocumentationPage extends React.Component<Props, State> {
   }
 }
 
-export default withApiVersion(DocumentationPage);
+export default function DocumentationPage(props: Omit<Props, 'version'>) {
+  const { version } = usePageApiVersion();
+  return <DocumentationPageWithApiVersion {...props} version={version} />;
+}
